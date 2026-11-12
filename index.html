@@ -10,7 +10,7 @@
    Apps Script → Dağıt → Dağıtımları yönet → Web uygulaması URL'si.
    "Yeni sürüm" ile güncellediğiniz sürece bu adres değişmez.
    ====================================================================== */
-var API_URL = 'https://script.google.com/macros/s/AKfycbz7ypXjSS-icbXviVKWx90NPbgNM_aig39Jv3P05427YjPwEL2cYqCDwpxy43zB2TuG/exec';
+var API_URL = 'BURAYA_APPS_SCRIPT_EXEC_ADRESINI_YAZIN';
 </script>
 <title>Pusula Planlama Yönetimi</title>
 <style>
@@ -587,7 +587,7 @@ button.dlite:hover{border-color:var(--navy)!important}
 .g-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--navy,#0B2545),var(--teal,#12B0A8));transition:width .3s ease}
 .g-foot{margin-top:22px;padding-top:12px;border-top:1px solid var(--rule,#DCE5EA);font-size:11px;font-weight:600;color:var(--ink-3,#5B6E82);text-align:center}
 
-.pp-who{display:none;flex:1 0 100%;justify-content:flex-end;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2)}
+.pp-who{display:none;flex:none;justify-content:flex-end;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2)}
 body.online .pp-who{display:flex}
 .pp-who b{font-weight:800;color:var(--navy)}
 .pp-st{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--head);font-size:11.5px;font-weight:600;color:var(--ink-3);white-space:nowrap}
@@ -608,6 +608,157 @@ body.ro .pp-who{display:none!important}
 .ic-say{grid-column:2;font-size:11.5px;color:var(--ink-3);font-weight:600}
 .ic-say.ic-var{color:#9A4530}
 @media print{#gate,.pp-who,.pp-banner{display:none!important}}
+
+/* ===================== KÜÇÜK EKRAN ve DOKUNMATİK =====================
+   ≤640px  telefon   : tek sütun üst bölüm, kaydırılabilir düğme şeritleri, dar sabit sütunlar, alttan açılan menü
+   ≤900px  tablet    : araç/filtre şeridi yapışmaz; yalnızca takım sekmeleri üstte kalır
+   dokunmatik        : satır menüsü düğmesi (⋯), daha büyük dokunma alanları
+   Sabit sütun genişlikleri (36 / 54 / 138) uygulama kodundaki MOBIL bölümüyle aynı olmalıdır. */
+/* Başlık ile düğmeler yan yana sığmazsa düğme bloğu kendiliğinden alt satıra iner (başlık sıkışmaz) */
+.brand{flex:1 1 auto}
+.top-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0;max-width:100%;margin-left:auto}
+.rowm{display:none}
+.ad-alt{display:none}
+#ppFiltre{display:none}
+
+@media (hover:none) and (pointer:coarse){
+  td.hnd .mv{display:none}
+  td.hnd{cursor:default}
+  .rowm{display:flex;align-items:center;justify-content:center;width:100%;min-height:40px;margin:0;padding:0;border:0;border-radius:6px;background:none;color:var(--ink-3);font:800 18px/1 var(--bfont);letter-spacing:.02em;cursor:pointer}
+  .rowm:active{background:var(--head);color:var(--navy)}
+  .bar .h{width:20px}.bar .h.l{left:-9px}.bar .h.r{right:-9px}
+  /* bar: yatay sürükleme barı taşır, dikey hareket sayfayı kaydırır (yanlışlıkla taşımayı önler); dokunma alanı satır yüksekliğine büyür */
+  .bar{touch-action:pan-y}
+  .bar::before{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px}
+  .bar .h{top:-4px;bottom:-4px}
+  .tbtn,.btn,.tab,.rowm,.sect-h .addbtn,.sect-h .caret,button.dlite,.g-btn{touch-action:manipulation}
+  #barMenu{overscroll-behavior:contain}
+  #barMenu button{padding:11px 12px!important;font-size:14px!important}
+  #barMenu .mtitle{padding:8px 12px 2px!important;font-size:10px!important}
+  .leg-hint{display:none}
+  .tab-save-ord{display:none!important}
+}
+
+@media (max-width:900px), (max-height:560px){
+  .stick{position:static!important;box-shadow:none!important}
+  .tabs{top:0!important;box-shadow:0 2px 8px rgba(11,37,69,.07)}
+}
+
+@media (max-width:900px){
+  .top{padding:10px 14px 8px!important;gap:10px!important}
+  .subbar,.fbar{padding-left:14px!important;padding-right:14px!important}
+  .subbar{flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none}
+  .subbar::-webkit-scrollbar{display:none}
+  .subbar > *{flex:none}
+  .subbar > span:not(.rlab){display:none}
+  .strip{padding:12px 14px 2px!important;gap:8px!important}
+  .banner,.pp-banner,.ro-banner,.scope-banner{margin-left:14px!important;margin-right:14px!important}
+  .legbar{padding-left:14px!important;padding-right:14px!important}
+  .tabs{padding:0 8px!important}
+  .local-srch-wrap{padding-left:14px;padding-right:14px}
+  #sections{padding:12px 14px 32px!important}
+  .kpi{padding:11px 12px 10px!important}
+  .kpi b{font-size:26px!important}
+}
+
+@media (max-width:640px){
+  /* --- üst bölüm --- */
+  .top{flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;padding:10px 12px 4px!important;gap:8px!important}
+  .brand{gap:10px!important;flex:none!important}
+  .brand .logo{height:28px!important}
+  .brand .org{display:none}
+  .brand b{font-size:17px!important;margin:0!important}
+  .brand b::after{display:none}
+  .brand .meta{margin-top:2px!important;font-size:11px!important}
+  .top-r{align-items:stretch;gap:8px}
+  .pp-who{justify-content:flex-start;gap:6px;flex:none}
+  .pp-who b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pp-who .pp-st{order:-1}
+  .actions{flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto;margin:0 -12px;padding:0 12px 6px!important;scrollbar-width:none}
+  .actions::-webkit-scrollbar{display:none}
+  .actions .tbtn{flex:none}
+  .tbtn{padding:9px 12px!important;font-size:13px!important}
+  .pp-who .tbtn{padding:7px 10px!important;font-size:12px!important}
+  .subbar,.fbar{padding-left:12px!important;padding-right:12px!important}
+  .subbar{padding-top:8px!important;padding-bottom:8px!important}
+  .rlab{display:none}
+
+  /* --- filtre: arama hep görünür, seçiciler "Filtre" düğmesiyle açılır --- */
+  .fbar{flex-wrap:wrap!important;gap:8px!important;padding-top:8px!important;padding-bottom:10px!important}
+  .fbar > span{display:none}
+  #ppFiltre{display:inline-flex;order:2;flex:none}
+  body.ro #ppFiltre{display:none!important}
+  .fbar .fld{display:none;order:3;flex:1 1 100%;flex-direction:column;align-items:stretch!important;gap:4px!important;min-width:0}
+  .fbar.acik .fld{display:flex}
+  .fbar .fld.srch{display:flex!important;order:1;flex:1 1 0;margin-left:0!important}
+  .fbar .srch label{display:none}
+  .fbar .fld select,.fbar .fld input{width:100%;max-width:none!important;min-width:0!important;font-size:16px!important;padding-top:8px!important;padding-bottom:8px!important}
+  .fbar .rng select{flex:1}
+
+  /* --- göstergeler: beşi tek satırda --- */
+  .strip{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;padding:10px 12px 0!important}
+  .strip{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.9fr) minmax(0,1.22fr) minmax(0,1.02fr)!important}
+  .kpi{padding:8px 5px 7px 6px!important;border-left-width:3px!important;border-radius:8px!important;min-width:0;overflow:hidden}
+  .kpi b{font-size:19px!important}
+  .kpi span{display:block;margin-top:4px!important;font-size:9.5px!important;line-height:1.15;letter-spacing:-.01em!important}
+  .banner{margin:8px 12px 0!important;padding:8px 10px!important;font-size:12px;flex-wrap:wrap}
+  .pp-banner,.ro-banner,.scope-banner{margin:8px 12px 0!important;font-size:12px!important;flex-wrap:wrap}
+  .legbar{flex-wrap:nowrap!important;overflow-x:auto;padding:8px 12px 0!important;scrollbar-width:none}
+  .legbar::-webkit-scrollbar{display:none}
+  .legbar > *{flex:none}
+  .leg-hint{display:none}
+
+  /* --- sekmeler ve takım içi arama --- */
+  .tabs{margin-top:8px!important;padding:0 4px!important}
+  .tab{padding:12px 10px!important;font-size:13px!important}
+  .local-srch-wrap{padding:8px 12px 0}
+  .local-srch-wrap .lsl{display:none}
+  .local-srch-wrap input{width:100%;font-size:16px;border-radius:8px;padding:8px 12px}
+
+  /* --- bölümler ve tablo --- */
+  #sections{padding:10px 8px 28px!important;gap:12px!important}
+  .sect-h{padding:8px 10px!important;gap:7px!important}
+  .sect-h h2{font-size:15px!important;white-space:nowrap}
+  .sect-h .cnt{white-space:nowrap;font-size:11.5px!important}
+  .sect-h .caret{width:34px!important;height:34px!important}
+  .sect-h .addbtn{white-space:nowrap;padding:8px 10px!important;font-size:12px!important}
+  .addwrap{padding:0 10px 10px}
+  .addbar label{display:flex;flex-direction:column;gap:3px;flex:1 1 30%;font-size:11px}
+  .addbar input,.addbar select{font-size:16px!important;padding:8px!important;width:100%!important;min-width:0}
+  .addbar .ok,.addbar .x{padding:10px 16px!important;font-size:13px}
+  .addbar .prev{flex:1 1 100%}
+  .grid td.hnd,.grid th.c-hnd{padding:0}
+  .c-no{left:36px}
+  .c-ad{left:90px}
+  /* talep adının altında güncel durum: telefonda Durum kolonu açılmadan da görünür */
+  .ad-alt{display:block;margin-top:1px;font-size:10px;font-weight:600;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .grid th,.grid td{padding:5px 6px}
+  .grid td.no .ord{display:none}
+  .grid th.c-no{white-space:normal;line-height:1.1}
+  select.dsel,button.dlite{font-size:12px!important;padding:6px 4px!important}
+
+  /* --- pencereler --- */
+  .mask{padding:8px!important}
+  .modal,.modal.wide{max-width:none!important}
+  .modal header{padding:10px 12px!important}
+  .modal header h2{font-size:15px!important}
+  .modal .bd{padding:12px!important;overflow-x:auto}
+  .modal footer{padding:10px 12px!important;flex-wrap:wrap}
+  .modal footer .btn{flex:1 1 auto;padding:10px 12px!important}
+  .modal .btn{padding:8px 12px}
+  #roList,#colList{columns:1!important}
+  .bk-tbl{font-size:11.5px}
+  .bk-tbl th,.bk-tbl td{padding:6px 5px}
+  .drop{padding:18px 12px}
+
+  /* --- satır menüsü ekranın altından açılır; bildirim tam genişlik --- */
+  #barMenu{left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;max-height:72vh!important;min-width:0!important;border-radius:12px!important;padding:6px!important}
+  .toast{left:12px!important;right:12px!important;bottom:12px!important;text-align:center}
+  .foot{padding:0 12px 24px}
+  .g-card{padding:24px 20px 18px}
+  .g-fld input{font-size:16px}
+}
+@media print{.rowm,#ppFiltre,.ad-alt{display:none!important}}
 </style>
 </head>
 <body>
@@ -671,8 +822,9 @@ body.ro .pp-who{display:none!important}
       <div class="meta"><span id="metaLine">—</span><span class="ver" id="verTag"></span></div>
     </div>
   </div>
+  <div class="top-r">
+  <div class="pp-who" id="ppWho"><span class="pp-st" id="ppDurum"></span><b id="ppAd"></b><button class="tbtn" id="ppSifre" title="Şifrenizi değiştirin">🔑 Şifre</button><button class="tbtn" id="ppCikis" title="Oturumu kapat">Çıkış</button></div>
   <div class="actions">
-    <div class="pp-who" id="ppWho"><span class="pp-st" id="ppDurum"></span><b id="ppAd"></b><button class="tbtn" id="ppSifre" title="Şifrenizi değiştirin">🔑 Şifre</button><button class="tbtn" id="ppCikis" title="Oturumu kapat">Çıkış</button></div>
     <button class="tbtn" id="btnImport" title="Güncel Pusula raporunu (.xlsx / CSV) yükle">⭯ Güncelle</button>
     <button class="tbtn pri" id="btnKaydet" title="Planı ve notları bu tarayıcıda kalıcı kaydet (Ctrl+S)">💾 Kaydet</button>
     <button class="tbtn" id="btnHtml" title="Güncel planla birlikte paylaşılabilir HTML dosyası oluştur ve indir">⭳ HTML indir</button>
@@ -681,6 +833,7 @@ body.ro .pp-who{display:none!important}
     <button class="tbtn" id="btnJson" title="Planın JSON yedeğini indir">⭳ JSON</button>
     <button class="tbtn" id="btnLoad" title="JSON yedeğinden kayıtlı planı geri yükle">⭱ JSON yükle</button>
     <button class="tbtn" id="btnXl" title="Portföy yöneticisi plan Excel'inden pusulaları Backlog'dan Devam Eden / Planlanan bölümlerine taşı (bar çizilmez)">⭱ Plan yükle</button>
+  </div>
   </div>
 </header>
 </div>
@@ -704,6 +857,7 @@ body.ro .pp-who{display:none!important}
 </div>
 <div class="fbar">
   <span class="rlab">Filtre</span>
+  <button class="tbtn" id="ppFiltre" type="button" aria-expanded="false">Filtre ▾</button>
   <div class="fld"><label for="pmSel">Portföy Yöneticisi</label><select id="pmSel"><option value="">Tüm portföyler</option></select></div>
   <div class="fld"><label for="btmudSel">BT Müdürlüğü</label><select id="btmudSel"><option value="">Tüm müdürlükler</option></select></div>
   <div class="fld"><label>Dönem Aralığı</label>
@@ -1324,7 +1478,7 @@ function tailCols(){ return state.cols.filter(k=>COLMAP[k].tail).map(k=>COLMAP[k
 
 function colW(c){ return state.colW[c.k] || c.w; }
 const FIXW = {hnd:30, no:98, ad:240};
-function adW(){ return state.colW.ad || FIXW.ad; }
+function adW(){ return MOBIL.dar ? FIXW.ad : (state.colW.ad || FIXW.ad); }
 
 function colgroupHtml(){
   const L = leftCols(), T = tailCols();
@@ -1573,14 +1727,14 @@ function renderBody(){
     h += '<div class="sect-scroll"><table class="grid" style="width:'+total+'px"><colgroup>'+cols+'</colgroup>'+thead+'<tbody>';
     if(!closed) items.forEach((it,i)=>{
       const r = REC.get(it.no), fl = g.k!=='havuz' ? flagOf(it.no) : null;
-      h += '<tr class="item'+(fl?' flag'+fl:'')+(it.s==null?' nodate':'')+(it.tip?' tip-'+it.tip:'')+(it.yan?' tip-yan':'')+'" data-no="'+it.no+'" data-grp="'+g.k+'" draggable="'+(state.readonly?'false':'true')+'">';
+      h += '<tr class="item'+(fl?' flag'+fl:'')+(it.s==null?' nodate':'')+(it.tip?' tip-'+it.tip:'')+(it.yan?' tip-yan':'')+'" data-no="'+it.no+'" data-grp="'+g.k+'" draggable="'+((state.readonly||MOBIL.dokunmatik)?'false':'true')+'">';
       h += '<td class="hnd sticky c-hnd" title="Sürükleyerek taşı"><div class="mv">'+
            '<button data-mv="up" title="Üstteki bölüme taşı">▲</button>'+
-           '<button data-mv="down" title="Alttaki bölüme taşı">▼</button></div></td>';
+           '<button data-mv="down" title="Alttaki bölüme taşı">▼</button></div><button class="rowm" data-rowm type="button" title="İşlemler" aria-label="İşlemler">⋯</button></td>';
       h += '<td class="sticky c-no no"><span class="ord">'+(i+1)+'</span>'+it.no+
            (it.tip?'<span class="tipdot" style="background:'+TIPC[it.tip]+'" title="'+BARTIP[it.tip]+'"></span>':'')+(it.yan?'<span class="tipdot" style="background:'+TIPC['yan']+'" title="Yan Sorumlu"></span>':'')+((g.k!=='tamam'&&r&&val(r,'durum')==='Kapatıldı - Başarılı')?'<span class="tipdot" style="background:#3a9460" title="Kapatıldı - Başarılı — plan yerinde; Tamamlanan\'a taşımak için sağ tık"></span>':'')+
            (it.badge?'<span class="pybadge b'+it.badge+'" title="'+(it.badge==='PO'?'Product Owner':'Portföy Yöneticisi')+'">'+it.badge+'</span>':'')+'</td>';
-      h += '<td class="sticky c-ad ad clip" title="'+esc(r?val(r,'ad'):(EXTRA_NAMES&&EXTRA_NAMES[it.no])||('Talep '+it.no))+'">'+(r?esc(val(r,'ad')):(EXTRA_NAMES&&EXTRA_NAMES[it.no])?esc(EXTRA_NAMES[it.no]):'<em style="color:var(--mut);font-size:10px" title="Bu pusula yüklü raporda bulunamadı. Güncelle ile güncel Pusula Takip Raporu\'nu yükleyin.">#'+it.no+' (raporda bulunamadı)</em>')+'</td>';
+      h += '<td class="sticky c-ad ad clip" title="'+esc(r?val(r,'ad'):(EXTRA_NAMES&&EXTRA_NAMES[it.no])||('Talep '+it.no))+'">'+(r?esc(val(r,'ad')):(EXTRA_NAMES&&EXTRA_NAMES[it.no])?esc(EXTRA_NAMES[it.no]):'<em style="color:var(--mut);font-size:10px" title="Bu pusula yüklü raporda bulunamadı. Güncelle ile güncel Pusula Takip Raporu\'nu yükleyin.">#'+it.no+' (raporda bulunamadı)</em>')+(r?'<span class="ad-alt">'+esc(val(r,'durum'))+'</span>':'')+'</td>';
       L.forEach(c=>h+=cellHtml(c,it,r));
       h += ganttHtml(it,g.k);
       T.forEach(c=>h+=cellHtml(c,it,r));
@@ -1754,6 +1908,7 @@ document.getElementById('sections').addEventListener('pointerdown', e=>{
 document.addEventListener('pointermove', e=>{
   if(!drag) return;
   const d = Math.round((e.clientX-drag.x0)/drag.cw);
+  if(d===(drag.d||0)) return; drag.d=d;
   const it = drag.it;
   if(drag.mode==='m'){ it.s = drag.s0+d; it.e = drag.e0+d; }
   else if(drag.mode==='l'){ it.s = Math.min(drag.s0+d, drag.e0); }
@@ -1858,6 +2013,7 @@ document.getElementById('sections').addEventListener('change', e=>{
 document.getElementById('sections').addEventListener('pointerdown', e=>{
   if(state.readonly) return;
   if(e.button!==0 || drag) return;
+  if(e.pointerType==='touch') return;      /* dokunmatikte bar, kaydırmayla karışmasın diye dokunarak konur (MOBIL bölümü) */
   const wrap=e.target.closest('.gwrap'); if(!wrap) return;
   if(e.target.closest('.bar') || e.target.closest('.off')) return;
   const tr=wrap.closest('tr.item'); if(!tr) return;
@@ -2060,6 +2216,7 @@ function openItemMenu(e){
   h+='<button data-toggleyan="1"><i class="mdot" style="background:'+TIPC['yan']+'"></i>Yan Sorumlu'+(it.yan?' <b>✓</b>':'')+'</button>';
   h+='<hr><div class="mtitle">Bölüme taşı</div>';
   GKEYS.forEach((k,i)=>{ if(k!==gk) h+='<button data-to="'+k+'"><i class="mdot" style="background:'+GDOTS[k]+'"></i>'+GROUPS[i].t+'</button>'; });
+  if(MOBIL.dokunmatik) h+='<hr><div class="mtitle">Sıra</div><button data-sira="-1"><i class="mdot" style="background:#c3cede"></i>↑ Bir üste al</button><button data-sira="1"><i class="mdot" style="background:#c3cede"></i>↓ Bir alta al</button>';
   h+='<hr><div class="mtitle">Kişisel İşaret</div>';
   ['','PO','PY'].forEach(b=>h+='<button data-badge="'+b+'"><span class="bdot b'+b+'">'+(b||'—')+'</span>'+(b?(' · '+{PO:'Product Owner',PY:'Portföy Yöneticisi'}[b]):'Kaldır')+(it.badge===b?' ✓':'')+'</button>');
   h+='<hr>'+(it.s!=null?'<button data-delbar="1"><i class="mdot" style="background:#c3cede"></i>Barı sil — tarihleri kaldır (pusula listede kalır)</button>':'')+'<button data-del="1" class="danger">🗑 Sil — listeden çıkar</button>';
@@ -2092,6 +2249,11 @@ menu.addEventListener('click', e=>{
     else if(b.dataset.base==='upd'){ logHist(it,'guncelle',{from:{s:it.base.s,e:it.base.e}, to:{s:it.s,e:it.e}}); it.base={s:it.s,e:it.e}; if(it.tip==='degisiklik') it.tip=''; toast(no+' baseline güncellendi: '+fmtM(it.s)+' → '+fmtM(it.e)); }
     else { logHist(it,'onay',{to:{s:it.s,e:it.e}}); it.base={s:it.s,e:it.e}; if(it.tip==='degisiklik') it.tip=''; toast(no+' planı onaylandı: '+fmtM(it.s)+' → '+fmtM(it.e)); }
     menu.classList.remove('show'); renderBody(); renderKpi(); saveSoon(); return;
+  }
+  if(it && b.dataset.sira){
+    const a=state.plan[state.servis][gk], i=a.findIndex(x=>x.no===no), j=i+(+b.dataset.sira);
+    menu.classList.remove('show'); if(i<0 || j<0 || j>=a.length) return;
+    snapshot(); a.splice(i,1); a.splice(j,0,it); renderBody(); saveSoon(); return;
   }
   if(it && b.dataset.tip!==undefined){ it.tip=b.dataset.tip; renderBody(); }
   else if(b.dataset.to) moveItem(no,gk,b.dataset.to);
@@ -3058,7 +3220,7 @@ document.getElementById('filePlan').onchange=e=>{
   fr.readAsText(f,'utf-8');
 };
 /* Kalıcılık: claude.ai içinde window.storage, yerel dosyada localStorage kullanılır. */
-const APP_VERSION='v3.0';
+const APP_VERSION='v3.1';
 document.getElementById('verTag').textContent=APP_VERSION;
 let SKEY='pusula-plan-v4';
 const TABKEY=()=>'pusula-tab-order'+(SKEY==='pusula-plan-v4'?'':':'+SKEY);
@@ -3150,6 +3312,74 @@ function toast(t){ const el=document.getElementById('toast'); el.textContent=t; 
 { const _bh=document.getElementById('btnHtml'); if(_bh){ _bh.textContent='⭳ HTML indir'; _bh.disabled=false; } }
 { const sp=document.getElementById('splash'); if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),400); } }
 (function(){const st=document.getElementById('stickBar');const upd=()=>{if(st) document.documentElement.style.setProperty('--stickH',st.offsetHeight+'px');};upd();window.addEventListener('resize',upd);setTimeout(upd,300);})();
+
+/* =====================================================================================================
+   KÜÇÜK EKRAN ve DOKUNMATİK  (çevrimiçi sayfada da, salt okunur dışa aktarılan kopyada da çalışır)
+   -----------------------------------------------------------------------------------------------------
+   · Telefonda (≤640px) sabit sütunlar daralır; ilk açılışta az kolonlu, dar aylı bir görünüm kurulur.
+   · Dokunmatikte satır menüsü ⋯ düğmesiyle açılır; satır sürüklemek yerine menüden taşınır/sıralanır.
+   · Dokunmatikte boş zaman çizelgesine DOKUNUNCA o aya 1 aylık bar konur (parmakla kaydırma bar çizmez);
+     bar sonra uçlarından sürüklenerek ya da Başlangıç/Bitiş seçicileriyle uzatılır.
+   ===================================================================================================== */
+const MOBIL = { dar:false, dokunmatik:false, sonIsaretci:'mouse' };
+(function(){
+  const mqDar=window.matchMedia('(max-width: 640px)'), mqDok=window.matchMedia('(hover: none) and (pointer: coarse)');
+  const olc=()=>{
+    MOBIL.dar=mqDar.matches; MOBIL.dokunmatik=mqDok.matches;
+    if(MOBIL.dar){ FIXW.hnd=36; FIXW.no=54; FIXW.ad=138; } else { FIXW.hnd=30; FIXW.no=98; FIXW.ad=240; }     /* stil dosyasındaki .c-no / .c-ad ile aynı */
+  };
+  olc();
+  const degisti=()=>{ olc(); try{ if(state.servis && !drag && !placeDrag) renderBody(); }catch(e){} };
+  [mqDar,mqDok].forEach(m=>{ if(m.addEventListener) m.addEventListener('change',degisti); else if(m.addListener) m.addListener(degisti); });
+  document.addEventListener('pointerdown', e=>{ MOBIL.sonIsaretci=e.pointerType||'mouse'; }, true);
+
+  const sec=document.getElementById('sections');
+  /* satır menüsü düğmesi (⋯) */
+  sec.addEventListener('click', e=>{
+    const b=e.target.closest('[data-rowm]'); if(!b) return;
+    e.preventDefault(); e.stopPropagation();                       /* belgedeki "dışarı tıklayınca menüyü kapat" bu tıklamayı görmesin */
+    const tr=b.closest('tr.item'); if(!tr) return;
+    if(state.readonly){ const it=findItem(tr.dataset.grp,+tr.dataset.no); if(it) openHist(it,tr.dataset.grp); return; }
+    const r=b.getBoundingClientRect();
+    openItemMenu({target:b, clientX:r.right+6, clientY:r.top, preventDefault(){}});
+  });
+  /* dokunarak bar koyma */
+  sec.addEventListener('click', e=>{
+    if(state.readonly || MOBIL.sonIsaretci!=='touch') return;
+    const wrap=e.target.closest('.gwrap'); if(!wrap || e.target.closest('.bar') || e.target.closest('.off')) return;
+    const tr=wrap.closest('tr.item'); if(!tr) return;
+    const it=findItem(tr.dataset.grp,+tr.dataset.no); if(!it || it.s!=null) return;
+    const rect=wrap.getBoundingClientRect(), n=state.monthN||12, pos=e.clientX-rect.left; let idx=n-1, c=0;
+    for(let i=0;i<n;i++){ c+=(state.monthW[i]||58); if(pos<c){ idx=i; break; } }
+    idx=Math.max(0,Math.min(n-1,idx));
+    it.s=it.e=state.vs+idx;
+    logHist(it,'tarih',{from:{s:null,e:null},to:{s:it.s,e:it.e}});
+    renderBody(); renderKpi(); snapshot(); saveSoon();
+    toast('Tarih atandı: '+fmtM(it.s)+' — barı uçlarından sürükleyerek uzatın');
+  });
+  /* tarayıcı hareketi kendisi devraldıysa (kaydırma, sistem hareketi) yarım kalan sürükleme geri alınır */
+  document.addEventListener('pointercancel', ()=>{
+    if(drag){ const d=drag; drag=null; const deg=(d.it.s!==d.s0 || d.it.e!==d.e0); d.it.s=d.s0; d.it.e=d.e0;
+      if(d.bar) d.bar.classList.remove('dragging');
+      if(deg) renderBody(); }                 /* hiçbir şey değişmediyse tablo yeniden çizilmez: dokunulan öge yerinde kalır, sayfa kaymaya devam eder */
+    if(placeDrag){ const p=placeDrag; placeDrag=null; p.it.s=null; p.it.e=null; renderBody(); }
+  });
+
+  /* telefonda filtre seçicileri düğmeyle açılır */
+  const fb=document.querySelector('.fbar'), ft=document.getElementById('ppFiltre');
+  if(fb && ft){
+    const yaz=()=>{ const n=(state.pm?1:0)+(state.btmud?1:0); ft.textContent='Filtre'+(n?' · '+n:'')+(fb.classList.contains('acik')?' ▴':' ▾'); ft.classList.toggle('on',n>0); ft.setAttribute('aria-expanded', fb.classList.contains('acik')); };
+    ft.addEventListener('click', ()=>{ fb.classList.toggle('acik'); yaz(); });
+    fb.addEventListener('change', ()=>setTimeout(yaz,0));
+    MOBIL.filtreYaz=yaz;
+  }
+  /* telefonda ilk açılış görünümü: talep adının hemen yanında zaman çizelgesi (güncel durum adın altında yazar),
+     sonda not kolonları; ay sütunları dar. Kullanıcı ⚙ Kolonlar ile istediği kolonu açabilir. */
+  MOBIL.varsayilan=function(){
+    state.cols=['aciklama','isnot'].filter(k=>COLMAP[k]);
+    state.colW={}; state.monthW=Array(Math.max(12,state.monthN||12)).fill(46);
+  };
+})();
 
 /* =====================================================================================================
    ÇEVRİMİÇİ KATMAN  (yalnızca sayfa sunucuya bağlı açıldığında — ONLINE — çalışır)
@@ -3555,7 +3785,7 @@ async function cevrimiciBaslat(){
   document.body.classList.add('online');
   SYNC.sayac=b.sayac||0; SYNC.raporSurum=(b.rapor&&b.rapor.surum)||0; SYNC.yoklama=Math.max(10,(b.ayar&&b.ayar.yoklama)||20)*1000;
   state.baseMig=true;
-  tercihYukle();
+  SYNC.tercihVar=tercihYukle();                            /* false: bu tarayıcıda ilk açılış (telefonda sade görünüm kurulur) */
   state.gizli=new Set(); SYNC.gizliTaban=new Set(); genelUygula(b.genel||{surum:0,gizli:[]});
   buildPlan();                                             /* rapordan türetilen plan (hiç düzenlenmemiş takımlar böyle kalır) */
   Object.entries(b.takimlar||{}).forEach(([sv,t])=>{       /* düzenlenmiş takımlar sunucudaki haliyle */
@@ -3604,7 +3834,7 @@ function cevrimiciHazir(){
   if(PP.bekleyenPlan){ const bp=PP.bekleyenPlan; PP.bekleyenPlan=null; setTimeout(()=>planIceAktar(bp.o, bp.ad), 400); }
 }
 
-window.__app = {get state(){return state}, renderAll, renderBody, moveItem, SVC_PM, findItem, applyCsv, splitCsv, planBlob, showPreview, REC, F, persist, restore, parseXlsx, syncPlanWithData, SYNC, takimKodla, takimCoz, birlestir3, buildPlan, D, GKEYS, yokla, cevrimiciKaydet, planIceAktar};
+window.__app = {get state(){return state}, renderAll, renderBody, moveItem, SVC_PM, findItem, applyCsv, splitCsv, planBlob, showPreview, REC, F, persist, restore, parseXlsx, syncPlanWithData, SYNC, takimKodla, takimCoz, birlestir3, buildPlan, D, GKEYS, yokla, cevrimiciKaydet, planIceAktar, MOBIL};
 
 /* ---------------- başlat ---------------- */
 (async function init(){
@@ -3659,6 +3889,8 @@ window.__app = {get state(){return state}, renderAll, renderBody, moveItem, SVC_
     'Kapatıldı - Başarılı işler barı yoksa Tamamlanan bölümüne otomatik yerleşir; planda barı varsa yerinde kalır ve yeşile döner (plana uyum görülsün diye) — isterseniz sağ tık ▸ Bölüme taşı ile Tamamlanan\'a alırsınız. '+
     '💾 Kaydet planı bu tarayıcıda saklar. ⭳ HTML indir ile mevcut planı gömülü paylaşılabilir tek dosya HTML olarak indir — alan kişi direkt açabilir. '+
     '⭯ Güncelle ile yeni Pusula raporunu (.xlsx) yükleyerek tüm verileri tazeleyebilirsin.';
+  if(MOBIL.dar && (state.readonly || (ONLINE && !SYNC.tercihVar))) MOBIL.varsayilan();
+  if(MOBIL.filtreYaz) MOBIL.filtreYaz();
   renderAll();
   if(ONLINE) cevrimiciHazir();
 })();
@@ -3670,7 +3902,7 @@ window.__app = {get state(){return state}, renderAll, renderBody, moveItem, SVC_
    ====================================================================================================== */
 (function(){
 'use strict';
-var SURUM = 'v3.0';
+var SURUM = 'v3.1';
 var kaynak = document.getElementById('appCode').textContent;
 var gate = document.getElementById('gate');
 function $(id){ return document.getElementById(id); }
